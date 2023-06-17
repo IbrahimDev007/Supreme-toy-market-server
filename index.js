@@ -88,6 +88,12 @@ async function run() {
             const result = await toysCollection.find(query).toArray();
             res.send(result);
         })
+        //toy post request
+        app.post('/toys', verifyJWT, async (req, res) => {
+            const toy = req.body;
+            const result = await toysCollection.insertOne(toy);
+            res.send(result);
+        })
 
 
         //get toy
