@@ -94,7 +94,13 @@ async function run() {
             const result = await toysCollection.insertOne(toy);
             res.send(result);
         })
-
+        //   single toy details show    
+        app.get('/toy/details/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await toysCollection.findOne(query);
+            res.send(result);
+        })
 
         //get toy
 
