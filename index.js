@@ -75,7 +75,22 @@ async function run() {
             const result = await toysCollection.deleteOne(query);
             res.send(result);
         })
+        //   update toy 
+        app.patch('/toys/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const toy = req.body;
+            const query = { _id: new ObjectId(id) };
+            const result = await toysCollection.updateOne(query, { $set: toy });
+            res.send(result);
+        })
+        //get toys 
+        app.get('/toys', async (req, res) => {
+            const result = await toysCollection.find(query).toArray();
+            res.send(result);
+        })
 
+
+        //get toy
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
