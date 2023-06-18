@@ -29,7 +29,8 @@ const verifyJWT = (req, res, next) => {
 //mongodb work from here
 
 
-const uri = `mongodb://127.0.0.1:27017`;
+// const uri = `mongodb://127.0.0.1:27017`;
+const uri = process.env.URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -42,8 +43,8 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        const usersCollection = client.db("toymarketdb").collection("userDB");
-        const toysCollection = client.db("toymarketdb").collection("toyListDB");
+        const usersCollection = client.db("toymarketDB").collection("userDB");
+        const toysCollection = client.db("toymarketDB").collection("toyListDB");
 
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
@@ -85,7 +86,7 @@ async function run() {
         })
         //get toys 
         app.get('/toys', async (req, res) => {
-            const result = await toysCollection.find(query).toArray();
+            const result = await toysCollection.find().toArray();
             res.send(result);
         })
         //toy post request
