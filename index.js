@@ -70,14 +70,14 @@ async function run() {
             res.send(result);
         });
         //delete toy 
-        app.delete('/toys/:id', verifyJWT, async (req, res) => {
+        app.delete('/toys/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await toysCollection.deleteOne(query);
             res.send(result);
         })
         //   update toy 
-        app.patch('/toys/:id', verifyJWT, async (req, res) => {
+        app.patch('/toys/:id', async (req, res) => {
             const id = req.params.id;
             const toy = req.body;
             const query = { _id: new ObjectId(id) };
@@ -90,23 +90,28 @@ async function run() {
             res.send(result);
         })
         //toy post request
-        app.post('/toys', verifyJWT, async (req, res) => {
+        app.post('/toys', async (req, res) => {
             const toy = req.body;
-            const result = await toysCollection.insertOne(toy);
+            // console.log(toy);
+            const result = await toysCollection.insertOne(toy, { w: 'majority' });
+            // console.log(result);
             res.send(result);
         })
         //   single toy details show    
-        app.get('/toy/details/:id', verifyJWT, async (req, res) => {
+        app.get('/toy/details/:id', async (req, res) => {
             const id = req.params.id;
+            // console.log("backend id", id);
             const query = { _id: new ObjectId(id) };
             const result = await toysCollection.findOne(query);
             res.send(result);
         })
         // my toy get 
-        app.get('/mytoy/:email', verifyJWT, async (req, res) => {
+        app.get('/mytoy/:email', async (req, res) => {
             const email = req.params.email;
-            const query = { email: email };
-            const result = await toysCollection.findOne(query);
+            const query = {
+                seller_email: email
+            };
+            const result = await toysCollection.find(query).toArray();
             res.send(result);
         })
 
