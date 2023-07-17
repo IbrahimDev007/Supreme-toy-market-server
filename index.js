@@ -47,7 +47,7 @@ async function run() {
         const toysCollection = client.db("toymarketDB").collection("toyListDB");
 
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         app.post('/jwt', (req, res) => {
             const user = req.body;
@@ -98,7 +98,7 @@ async function run() {
             res.send(result);
         })
         //   single toy details show    
-        app.get('/toy/details/:id', async (req, res) => {
+        app.get('/toy/details/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             // console.log("backend id", id);
             const query = { _id: new ObjectId(id) };
